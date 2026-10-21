@@ -1,0 +1,52 @@
+﻿@* File: /Views/HocVien/Details.cshtml *@
+@* Họ và tên: Tạ Xuân Thưng - 23103100286 *@
+@model QuanLyKhoaHoc.Models.HocVien
+@{
+    ViewData["Title"] = "Chi tiết học viên";
+}
+<div class="card mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold">Hồ sơ Học viên: @Model.HoTen (#@Model.MaHocVien)</h5>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Quay lại</a>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <p><strong>Tài khoản:</strong> @Model.TaiKhoan?.TenDangNhap</p>
+                <p><strong>Ngày sinh:</strong> @Model.NgaySinh.ToString("dd/MM/yyyy") (@Model.GioiTinh)</p>
+                <p><strong>Số điện thoại:</strong> @Model.SoDienThoai</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Email:</strong> @Model.Email</p>
+                <p><strong>Trình độ:</strong> @Model.TrinhDo</p>
+                <p><strong>Địa chỉ:</strong> @Model.DiaChi</p>
+            </div>
+        </div>
+        <h6 class="fw-bold">Lịch sử đăng ký khóa học (@Model.DangKyKhoaHocs.Count):</h6>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã ĐK</th>
+                    <th>Khóa học</th>
+                    <th>Ngày đăng ký</th>
+                    <th>Trạng thái</th>
+                    <th>Điểm TK</th>
+                    <th>Kết quả</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var dk in Model.DangKyKhoaHocs)
+                {
+                    <tr>
+                        <td>#@dk.MaDangKy</td>
+                        <td>@dk.KhoaHoc?.TenKhoaHoc</td>
+                        <td>@dk.NgayDangKy.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td><span class="badge bg-secondary">@dk.TrangThai</span></td>
+                        <td>@(dk.KetQuaHocTap != null ? dk.KetQuaHocTap.DiemTongKet.ToString("0.00") : "-")</td>
+                        <td>@(dk.KetQuaHocTap != null ? dk.KetQuaHocTap.KetQua : "Chưa có")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

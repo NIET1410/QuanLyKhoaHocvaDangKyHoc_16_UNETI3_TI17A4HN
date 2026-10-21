@@ -1,0 +1,58 @@
+﻿@* File: /Views/HocVien/Index.cshtml *@
+@* Họ và tên: Tạ Xuân Thưng - 23103100286 *@
+@model IEnumerable<QuanLyKhoaHoc.Models.HocVien>
+@{
+    ViewData["Title"] = "Quản lý Học viên";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold mb-0"><i class="bi bi-people text-primary me-2"></i>Danh sách Học viên</h4>
+</div>
+
+<form method="get" class="card card-body mb-3">
+    <div class="row g-2">
+        <div class="col-md-9">
+            <input name="search" value="@ViewBag.Search" class="form-control" placeholder="Tìm theo họ tên, email, số điện thoại..." />
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Đặt lại</a>
+        </div>
+    </div>
+</form>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã HV</th>
+                    <th>Họ và tên</th>
+                    <th>Giới tính</th>
+                    <th>Ngày sinh</th>
+                    <th>Điện thoại</th>
+                    <th>Email</th>
+                    <th>Số khóa ĐK</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>#@item.MaHocVien</td>
+                        <td class="fw-semibold">@item.HoTen</td>
+                        <td>@item.GioiTinh</td>
+                        <td>@item.NgaySinh.ToString("dd/MM/yyyy")</td>
+                        <td>@item.SoDienThoai</td>
+                        <td>@item.Email</td>
+                        <td><span class="badge bg-info text-dark">@item.DangKyKhoaHocs.Count khóa</span></td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@item.MaHocVien" class="btn btn-sm btn-outline-primary">Xem lịch sử học</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
