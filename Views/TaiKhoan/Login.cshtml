@@ -1,0 +1,63 @@
+﻿@* Họ và tên: Nguyễn Duy Trung *@
+@* Mã sinh viên: 23103100256 *@
+@* Nội dung thực hiện: Module 1 - Giao diện Đăng nhập kèm hướng dẫn tài khoản Demo *@
+
+@model QuanLyKhoaHoc.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Đăng nhập hệ thống";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-shield-lock me-2"></i>ĐĂNG NHẬP HỆ THỐNG</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Login" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="TenDangNhap" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input asp-for="TenDangNhap" class="form-control" placeholder="Nhập tên đăng nhập..." />
+                        </div>
+                        <span asp-validation-for="TenDangNhap" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="MatKhau" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-key"></i></span>
+                            <input asp-for="MatKhau" class="form-control" placeholder="Nhập mật khẩu..." />
+                        </div>
+                        <span asp-validation-for="MatKhau" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mt-2">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập
+                    </button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <span class="text-muted small">Chưa có tài khoản học viên?</span>
+                    <a asp-action="Register" class="fw-semibold text-decoration-none ms-1">Đăng ký ngay</a>
+                </div>
+
+                <hr />
+                <div class="bg-light p-3 rounded border small">
+                    <div class="fw-bold text-secondary mb-1"><i class="bi bi-info-circle me-1"></i>Tài khoản Demo kiểm thử:</div>
+                    <div><strong>Admin:</strong> <code>admin</code> / <code>Admin@123</code></div>
+                    <div><strong>Nhân viên:</strong> <code>staff01</code> / <code>Staff@123</code></div>
+                    <div><strong>Học viên:</strong> <code>student01</code> / <code>Student@123</code></div>
+                    <div><strong>Tài khoản bị khóa:</strong> <code>student30</code> / <code>Student@123</code></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

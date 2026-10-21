@@ -1,0 +1,45 @@
+﻿@* Họ và tên: Nguyễn Duy Trung *@
+@* Mã sinh viên: 23103100256 *@
+@* Nội dung thực hiện: Module 1 - Xem và đổi mật khẩu tài khoản đang đăng nhập *@
+
+@model QuanLyKhoaHoc.Models.TaiKhoan
+@{
+    ViewData["Title"] = "Thông tin tài khoản";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-person-gear text-primary me-2"></i>Thông tin tài khoản của tôi</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Profile" method="post">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tên đăng nhập</label>
+                        <input value="@Model.TenDangNhap" class="form-control bg-light" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Vai trò hệ thống</label>
+                        <input value="@Model.VaiTro" class="form-control bg-light" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Họ và tên</label>
+                        <input name="hoTen" value="@Model.HoTen" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Email</label>
+                        <input name="email" type="email" value="@Model.Email" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Mật khẩu mới (Để trống nếu không đổi)</label>
+                        <input name="matKhauMoi" type="password" class="form-control" placeholder="Nhập mật khẩu mới từ 6 ký tự..." />
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i>Lưu thay đổi
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
