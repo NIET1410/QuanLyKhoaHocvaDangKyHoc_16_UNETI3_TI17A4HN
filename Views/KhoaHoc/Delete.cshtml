@@ -1,0 +1,25 @@
+﻿@* File: /Views/KhoaHoc/Delete.cshtml *@
+@* Họ và tên: Phan Anh Tú - 23103100258 *@
+@model QuanLyKhoaHoc.Models.KhoaHoc
+@{
+    ViewData["Title"] = "Xóa khóa học";
+}
+<div class="card col-md-7 mx-auto border-danger">
+    <div class="card-header bg-danger text-white py-3">
+        <h5 class="mb-0 fw-bold">Xác nhận xóa khóa học</h5>
+    </div>
+    <div class="card-body">
+        <p>Bạn có chắc chắn muốn xóa khóa học <strong>@Model.TenKhoaHoc</strong>?</p>
+        @if (Model.DangKyKhoaHocs.Any())
+        {
+            <div class="alert alert-warning">
+                Khóa học này đã có <strong>@Model.DangKyKhoaHocs.Count lượt đăng ký</strong>. Hệ thống sẽ chặn xóa để bảo toàn lịch sử!
+            </div>
+        }
+        <form asp-action="Delete" method="post" class="d-flex justify-content-between">
+            <input type="hidden" asp-for="MaKhoaHoc" />
+            <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+            <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+        </form>
+    </div>
+</div>
