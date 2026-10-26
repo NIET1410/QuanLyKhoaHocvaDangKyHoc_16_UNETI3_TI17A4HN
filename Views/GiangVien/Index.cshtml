@@ -1,0 +1,54 @@
+﻿@* File: /Views/GiangVien/Index.cshtml *@
+@* Họ và tên: Nguyễn Duy Trung - 23103100256 *@
+@model IEnumerable<QuanLyKhoaHoc.Models.GiangVien>
+@{
+    ViewData["Title"] = "Quản lý Giảng viên";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold mb-0"><i class="bi bi-person-workspace text-primary me-2"></i>Danh sách Giảng viên</h4>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Thêm giảng viên</a>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã GV</th>
+                    <th>Họ và tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Chuyên môn</th>
+                    <th>Số khóa dạy</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>#@item.MaGiangVien</td>
+                        <td class="fw-semibold">@item.HoTen</td>
+                        <td>@item.Email</td>
+                        <td>@item.SoDienThoai</td>
+                        <td>@item.ChuyenMon</td>
+                        <td><span class="badge bg-info text-dark">@item.KhoaHocs.Count lớp</span></td>
+                        <td>
+                            <span class="badge @(item.TrangThai ? "bg-success" : "bg-secondary")">
+                                @(item.TrangThai ? "Đang dạy" : "Tạm nghỉ")
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@item.MaGiangVien" class="btn btn-sm btn-outline-primary">Sửa</a>
+                            <form asp-action="Delete" asp-route-id="@item.MaGiangVien" method="post" class="d-inline" onsubmit="return confirm('Xác nhận xóa giảng viên này?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

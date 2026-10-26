@@ -1,0 +1,59 @@
+﻿@* File: /Views/MonHoc/Index.cshtml *@
+@* Họ và tên: Nguyễn Duy Trung - 23103100256 *@
+@model IEnumerable<QuanLyKhoaHoc.Models.MonHoc>
+@{
+    ViewData["Title"] = "Quản lý Môn học";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold mb-0"><i class="bi bi-book text-primary me-2"></i>Danh sách Môn học</h4>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Thêm môn học</a>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã MH</th>
+                    <th>Tên môn học</th>
+                    <th>Số tín chỉ</th>
+                    <th>Học phí chuẩn</th>
+                    <th>Số khóa học</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>#@item.MaMonHoc</td>
+                        <td class="fw-semibold">@item.TenMonHoc</td>
+                        <td>@item.SoTinChi</td>
+                        <td class="text-danger fw-semibold">@item.HocPhi.ToString("N0") đ</td>
+                        <td><span class="badge bg-info text-dark">@item.KhoaHocs.Count khóa</span></td>
+                        <td>
+                            @if (item.TrangThai)
+                            {
+                                <span class="badge bg-success">Đang áp dụng</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Ngừng áp dụng</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@item.MaMonHoc" class="btn btn-sm btn-outline-info">Chi tiết</a>
+                            <a asp-action="Edit" asp-route-id="@item.MaMonHoc" class="btn btn-sm btn-outline-primary">Sửa</a>
+                            <form asp-action="ToggleStatus" asp-route-id="@item.MaMonHoc" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-warning">Đổi TT</button>
+                            </form>
+                            <a asp-action="Delete" asp-route-id="@item.MaMonHoc" class="btn btn-sm btn-outline-danger">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

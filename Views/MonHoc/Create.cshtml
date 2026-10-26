@@ -1,0 +1,45 @@
+﻿@* File: /Views/MonHoc/Create.cshtml & Edit.cshtml (Dùng chung bố cục) *@
+@* File: /Views/MonHoc/Create.cshtml *@
+@model QuanLyKhoaHoc.Models.MonHoc
+@{
+    ViewData["Title"] = "Thêm môn học";
+}
+<div class="card col-md-8 mx-auto">
+    <div class="card-header bg-white py-3"><h5 class="mb-0 fw-bold">Thêm Môn học mới</h5></div>
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+            <div class="mb-3">
+                <label asp-for="TenMonHoc" class="form-label fw-semibold"></label>
+                <input asp-for="TenMonHoc" class="form-control" />
+                <span asp-validation-for="TenMonHoc" class="text-danger small"></span>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label asp-for="SoTinChi" class="form-label fw-semibold"></label>
+                    <input asp-for="SoTinChi" type="number" class="form-control" />
+                    <span asp-validation-for="SoTinChi" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="HocPhi" class="form-label fw-semibold"></label>
+                    <input asp-for="HocPhi" type="number" step="50000" class="form-control" />
+                    <span asp-validation-for="HocPhi" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="MoTa" class="form-label fw-semibold"></label>
+                <textarea asp-for="MoTa" rows="3" class="form-control"></textarea>
+                <span asp-validation-for="MoTa" class="text-danger small"></span>
+            </div>
+            <div class="form-check mb-3">
+                <input asp-for="TrangThai" class="form-check-input" />
+                <label asp-for="TrangThai" class="form-check-label"></label>
+            </div>
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+                <button type="submit" class="btn btn-primary">Lưu môn học</button>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

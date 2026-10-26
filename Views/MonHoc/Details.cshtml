@@ -1,0 +1,26 @@
+﻿@* File: /Views/MonHoc/Details.cshtml *@
+@model QuanLyKhoaHoc.Models.MonHoc
+@{
+    ViewData["Title"] = "Chi tiết môn học";
+}
+<div class="card mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold">Chi tiết Môn học: @Model.TenMonHoc</h5>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Quay lại</a>
+    </div>
+    <div class="card-body">
+        <p><strong>Số tín chỉ:</strong> @Model.SoTinChi</p>
+        <p><strong>Học phí chuẩn:</strong> @Model.HocPhi.ToString("N0") VNĐ</p>
+        <p><strong>Mô tả:</strong> @Model.MoTa</p>
+        <h6 class="fw-bold mt-4">Các khóa học thuộc môn này (@Model.KhoaHocs.Count):</h6>
+        <ul class="list-group">
+            @foreach (var kh in Model.KhoaHocs)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><strong>@kh.TenKhoaHoc</strong> - GV: @kh.GiangVien?.HoTen</span>
+                    <span class="badge bg-primary">@kh.TrangThai</span>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+﻿@* File: /Views/MonHoc/Delete.cshtml *@
+@model QuanLyKhoaHoc.Models.MonHoc
+@{
+    ViewData["Title"] = "Xóa môn học";
+}
+<div class="card col-md-7 mx-auto border-danger">
+    <div class="card-header bg-danger text-white py-3">
+        <h5 class="mb-0 fw-bold">Xác nhận xóa môn học</h5>
+    </div>
+    <div class="card-body">
+        <p>Bạn có chắc chắn muốn xóa môn học <strong>@Model.TenMonHoc</strong>?</p>
+        @if (Model.KhoaHocs.Any())
+        {
+            <div class="alert alert-warning">
+                Môn học này đang có <strong>@Model.KhoaHocs.Count khóa học</strong> tham chiếu. Hệ thống sẽ chặn xóa để bảo toàn dữ liệu!
+            </div>
+        }
+        <form asp-action="Delete" method="post" class="d-flex justify-content-between">
+            <input type="hidden" asp-for="MaMonHoc" />
+            <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+            <button type="submit" class="btn btn-danger">Xác nhận Xóa</button>
+        </form>
+    </div>
+</div>
