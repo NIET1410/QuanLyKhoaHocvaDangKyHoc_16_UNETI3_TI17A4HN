@@ -1,0 +1,77 @@
+﻿@* File: /Views/DangKyKhoaHoc/Details.cshtml (Trang xử lý luồng trạng thái của Nhân viên) *@
+@* Họ và tên: Ngô Duy Thái - 23103100247 *@
+@model QuanLyKhoaHoc.Models.DangKyKhoaHoc
+@{
+    ViewData["Title"] = "Xử lý hồ sơ đăng ký";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold mb-0">Xử lý Hồ sơ Đăng ký #@Model.MaDangKy</h4>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Quay lại danh sách</a>
+</div>
+
+@if (Model.KhoaHoc != null && Model.KhoaHoc.SoChoConLai <= 0)
+{
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-octagon-fill me-2"></i>
+        <strong>Cảnh báo giới hạn sĩ số:</strong> Khóa học <strong>@Model.KhoaHoc.TenKhoaHoc</strong> đã đạt giới hạn tối đa (@Model.KhoaHoc.SoLuongDaDangKy / @Model.KhoaHoc.SoLuongToiDa học viên).
+    </div>
+}
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-bold">Thông tin Học viên & Khóa học</div>
+            <div class="card-body">
+                <p><strong>Học viên:</strong> @Model.HocVien?.HoTen (SĐT: @Model.HocVien?.SoDienThoai)</p>
+                <p><strong>Khóa học:</strong> @Model.KhoaHoc?.TenKhoaHoc</p>
+                <p><strong>Ngày tạo giao dịch:</strong> @Model.NgayDangKy.ToString("dd/MM/yyyy HH:mm")</p>
+                <p><strong>Ngày xác nhận hoàn thành:</strong> @(Model.NgayXacNhan?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác nhận")</p>
+                <p><strong>Học phí khóa học:</strong> @Model.KhoaHoc?.HocPhi.ToString("N0") VNĐ</p>
+                <p><strong>Đã đóng:</strong> <span class="text-success fw-bold">@Model.SoTienDaDong.ToString("N0") VNĐ</span></p>
+                <p><strong>Công nợ còn lại:</strong> <span class="text-danger fw-bold">@Model.SoTienConLai.ToString("N0") VNĐ</span></p>
+                <p><strong>Trạng thái hiện tại:</strong> <span class="badge bg-primary fs-6">@Model.TrangThai</span></p>
+                <p><strong>Ghi chú:</strong> @Model.GhiChu</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card h-100 border-primary">
+            <div class="card-header bg-primary text-white fw-bold">
+                Cập nhật Trạng thái & Thu Học phí (Luồng: Chờ xử lý &rarr; Đang xử lý &rarr; Hoàn thành)
+            </div>
+            <div class="card-body">
+                <form asp-action="ProcessStatus" method="post">
+                    <input type="hidden" name="maDangKy" value="@Model.MaDangKy" />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Chuyển sang trạng thái</label>
+                        <select name="trangThaiMoi" class="form-select">
+                            <option value="Chờ xử lý" selected="@(Model.TrangThai == "Chờ xử lý")">Chờ xử lý</option>
+                            <option value="Đang xử lý" selected="@(Model.TrangThai == "Đang xử lý")">Đang xử lý (Bước 2)</option>
+                            <option value="Hoàn thành" selected="@(Model.TrangThai == "Hoàn thành")">Hoàn thành (Bước 3 - Chỉ khi đã qua Đang xử lý)</option>
+                            <option value="Từ chối" selected="@(Model.TrangThai == "Từ chối")">Từ chối</option>
+                            <option value="Hủy" selected="@(Model.TrangThai == "Hủy")">Hủy</option>
+                        </select>
+                        <small class="text-muted">Lưu ý: Hệ thống sẽ chặn nếu chuyển nhảy cóc từ "Chờ xử lý" sang "Hoàn thành".</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Số tiền học viên đóng thêm lần này (VNĐ)</label>
+                        <input name="soTienDongThem" type="number" step="50000" value="0" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Ghi chú xử lý</label>
+                        <textarea name="ghiChu" rows="3" class="form-control">@Model.GhiChu</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">
+                        <i class="bi bi-check2-all me-1"></i>Cập nhật xử lý hồ sơ
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
