@@ -1,0 +1,64 @@
+﻿@* Họ và tên: Phan Anh Tú *@
+@* Mã sinh viên: 23103100258 *@
+@* Nội dung thực hiện: Module 2 - Chi tiết Khóa học & Đổi trạng thái nhanh *@
+
+@model QuanLyKhoaHoc.Models.KhoaHoc
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Chi tiết khóa học";
+    var vaiTro = HttpContextAccessor.HttpContext?.Session.GetString("VaiTro");
+    bool isStaffOrAdmin = (vaiTro == "Admin" || vaiTro == "NhanVien");
+}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h4 class="mb-0 fw-bold text-primary">@Model.TenKhoaHoc</h4>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Quay lại danh sách</a>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-8">
+                <p><strong>Môn học chuyên đề:</strong> @Model.MonHoc?.TenMonHoc (@Model.MonHoc?.SoTinChi tín chỉ)</p>
+                <p><strong>Giảng viên phụ trách:</strong> @Model.GiangVien?.HoTen (@Model.GiangVien?.ChuyenMon)</p>
+                <p><strong>Thời gian học:</strong> @Model.NgayBatDau.ToString("dd/MM/yyyy") đến @Model.NgayKetThuc.ToString("dd/MM/yyyy")</p>
+                <p><strong>Hình thức đào tạo:</strong> <span class="badge bg-info text-dark">@Model.HinhThuc</span></p>
+                <p><strong>Mô tả khóa học:</strong> @Model.MoTa</p>
+            </div>
+            <div class="col-md-4 border-start">
+                <div class="p-3 bg-light rounded">
+                    <div class="mb-2"><strong>Trạng thái:</strong> <span class="badge bg-primary fs-6">@Model.TrangThai</span></div>
+                    <div class="mb-2"><strong>Học phí:</strong> <span class="text-danger fw-bold fs-4">@Model.HocPhi.ToString("N0") đ</span></div>
+                    <div class="mb-3"><strong>Sĩ số:</strong> Đã đăng ký @Model.SoLuongDaDangKy / @Model.SoLuongToiDa (Còn @Model.SoChoConLai chỗ)</div>
+
+                    @if (Model.TrangThai == "Đang mở" && Model.SoChoConLai > 0 && !isStaffOrAdmin)
+                    {
+                        <a asp-controller="DangKyKhoaHoc" asp-action="Confirm" asp-route-maKhoaHoc="@Model.MaKhoaHoc" class="btn btn-success w-100 fw-bold">
+                            <i class="bi bi-check2-circle me-1"></i>Đăng ký khóa học này
+                        </a>
+                    }
+
+                    @if (isStaffOrAdmin)
+                    {
+                        <hr />
+                        <form asp-action="ChangeStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.MaKhoaHoc" />
+                            <label class="form-label small fw-bold">Đổi trạng thái nhanh:</label>
+                            <div class="input-group input-group-sm">
+                                <select name="trangThaiMoi" class="form-select">
+                                    <option value="Chưa mở" selected="@(Model.TrangThai == "Chưa mở")">Chưa mở</option>
+                                    <option value="Đang mở" selected="@(Model.TrangThai == "Đang mở")">Đang mở</option>
+                                    <option value="Đã đầy" selected="@(Model.TrangThai == "Đã đầy")">Đã đầy</option>
+                                    <option value="Đang học" selected="@(Model.TrangThai == "Đang học")">Đang học</option>
+                                    <option value="Đã kết thúc" selected="@(Model.TrangThai == "Đã kết thúc")">Đã kết thúc</option>
+                                    <option value="Đã hủy" selected="@(Model.TrangThai == "Đã hủy")">Đã hủy</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

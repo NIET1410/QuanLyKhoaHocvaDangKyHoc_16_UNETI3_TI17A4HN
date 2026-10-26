@@ -1,0 +1,78 @@
+﻿@* File: /Views/KhoaHoc/Edit.cshtml *@
+@* Họ và tên: Phan Anh Tú - 23103100258 *@
+@model QuanLyKhoaHoc.Models.KhoaHoc
+@{
+    ViewData["Title"] = "Chỉnh sửa khóa học";
+}
+<div class="card col-md-9 mx-auto">
+    <div class="card-header bg-white py-3"><h5 class="mb-0 fw-bold">Cập nhật Khóa học #@Model.MaKhoaHoc</h5></div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="MaKhoaHoc" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label asp-for="TenKhoaHoc" class="form-label fw-semibold"></label>
+                    <input asp-for="TenKhoaHoc" class="form-control" />
+                    <span asp-validation-for="TenKhoaHoc" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="MaMonHoc" class="form-label fw-semibold"></label>
+                    <select asp-for="MaMonHoc" asp-items="@ViewBag.MaMonHoc" class="form-select"></select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="MaGiangVien" class="form-label fw-semibold"></label>
+                    <select asp-for="MaGiangVien" asp-items="@ViewBag.MaGiangVien" class="form-select"></select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="NgayBatDau" class="form-label fw-semibold"></label>
+                    <input asp-for="NgayBatDau" type="date" class="form-control" />
+                    <span asp-validation-for="NgayBatDau" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="NgayKetThuc" class="form-label fw-semibold"></label>
+                    <input asp-for="NgayKetThuc" type="date" class="form-control" />
+                    <span asp-validation-for="NgayKetThuc" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="SoLuongToiDa" class="form-label fw-semibold"></label>
+                    <input asp-for="SoLuongToiDa" type="number" class="form-control" />
+                    <span asp-validation-for="SoLuongToiDa" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="HocPhi" class="form-label fw-semibold"></label>
+                    <input asp-for="HocPhi" type="number" step="50000" class="form-control" />
+                    <span asp-validation-for="HocPhi" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="HinhThuc" class="form-label fw-semibold"></label>
+                    <select asp-for="HinhThuc" class="form-select">
+                        <option value="Offline">Offline</option>
+                        <option value="Online">Online</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="TrangThai" class="form-label fw-semibold"></label>
+                    <select asp-for="TrangThai" class="form-select">
+                        <option value="Chưa mở">Chưa mở</option>
+                        <option value="Đang mở">Đang mở</option>
+                        <option value="Đã đầy">Đã đầy</option>
+                        <option value="Đang học">Đang học</option>
+                        <option value="Đã kết thúc">Đã kết thúc</option>
+                        <option value="Đã hủy">Đã hủy</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label asp-for="MoTa" class="form-label fw-semibold"></label>
+                    <textarea asp-for="MoTa" rows="3" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="mt-4 d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
