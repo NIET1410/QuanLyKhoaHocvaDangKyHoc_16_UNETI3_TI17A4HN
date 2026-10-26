@@ -1,0 +1,246 @@
+﻿@* Họ và tên: Nguyễn Duy Trung *@
+@* Mã sinh viên: 23103100256 *@
+@* Nội dung thực hiện: Thiết kế Layout chung Responsive cho toàn hệ thống *@
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var session = HttpContextAccessor.HttpContext?.Session;
+    var maTaiKhoan = session?.GetInt32("MaTaiKhoan");
+    var hoTen = session?.GetString("HoTen");
+    var vaiTro = session?.GetString("VaiTro");
+    bool isStaffOrAdmin = (vaiTro == "Admin" || vaiTro == "NhanVien");
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Hệ thống Quản lý Khóa học EduPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <style>
+            body {
+                background-color: #f8f9fa;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            .navbar-brand {
+                font-weight: 700;
+                letter-spacing: 0.5px;
+            }
+            .sidebar {
+                min-height: calc(100vh - 56px);
+                background-color: #1e293b;
+                color: #fff;
+            }
+            .sidebar .nav-link {
+                color: #cbd5e1;
+                padding: 0.75rem 1rem;
+                border-radius: 0.375rem;
+                margin-bottom: 0.25rem;
+                font-weight: 500;
+            }
+            .sidebar .nav-link:hover, .sidebar .nav-link.active {
+                background-color: #334155;
+                color: #ffffff;
+            }
+            .sidebar .nav-link i {
+                margin-right: 0.6rem;
+                width: 20px;
+                text-align: center;
+            }
+            .card {
+                border: none;
+                box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+                border-radius: 0.5rem;
+            }
+            footer {
+                background-color: #fff;
+                border-top: 1px solid #e2e8f0;
+            }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- HEADER NAVBAR -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+            <div class="container-fluid px-3">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-mortarboard-fill me-2"></i>EDUPRO CENTER
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door me-1"></i>Trang chủ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="KhoaHoc" asp-action="Index">
+                                <i class="bi bi-journal-bookmark me-1"></i>Khóa học
+                            </a>
+                        </li>
+                        @if (vaiTro == "HocVien")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="DangKyKhoaHoc" asp-action="MyRegistrations">
+                                    <i class="bi bi-card-checklist me-1"></i>Đăng ký của tôi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="KetQuaHocTap" asp-action="MyResults">
+                                    <i class="bi bi-award me-1"></i>Kết quả học tập
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="HocVien" asp-action="Profile">
+                                    <i class="bi bi-person-vcard me-1"></i>Hồ sơ cá nhân
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        @if (maTaiKhoan != null)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="bi bi-person-circle me-1"></i>@hoTen
+                                    <span class="badge bg-light text-primary ms-1">@vaiTro</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="TaiKhoan" asp-action="Profile">
+                                            <i class="bi bi-person-gear me-2"></i>Thông tin tài khoản
+                                        </a>
+                                    </li>
+                                    @if (vaiTro == "HocVien")
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="HocVien" asp-action="Profile">
+                                                <i class="bi bi-person-lines-fill me-2"></i>Cập nhật hồ sơ học viên
+                                            </a>
+                                        </li>
+                                    }
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" asp-controller="TaiKhoan" asp-action="Logout">
+                                            <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item me-2">
+                                <a class="btn btn-outline-light btn-sm px-3" asp-controller="TaiKhoan" asp-action="Login">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-warning btn-sm px-3 fw-semibold" asp-controller="TaiKhoan" asp-action="Register">
+                                    <i class="bi bi-person-plus me-1"></i>Đăng ký học viên
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT + SIDEBAR CHO ADMIN / NHÂN VIÊN -->
+    <div class="container-fluid flex-grow-1">
+        <div class="row">
+            @if (isStaffOrAdmin)
+            {
+                <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-3">
+                    <div class="text-uppercase small text-secondary fw-bold mb-2 px-2">Quản trị hệ thống</div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="ThongKe" asp-action="Dashboard">
+                                <i class="bi bi-speedometer2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="MonHoc" asp-action="Index">
+                                <i class="bi bi-book"></i>Môn học
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="GiangVien" asp-action="Index">
+                                <i class="bi bi-person-workspace"></i>Giảng viên
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="KhoaHoc" asp-action="Index">
+                                <i class="bi bi-easel2"></i>Khóa học
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="HocVien" asp-action="Index">
+                                <i class="bi bi-people"></i>Học viên
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="DangKyKhoaHoc" asp-action="Index">
+                                <i class="bi bi-clipboard-check"></i>Tiếp nhận Đăng ký
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="KetQuaHocTap" asp-action="Index">
+                                <i class="bi bi-journal-check"></i>Kết quả học tập
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="ThongKe" asp-action="Index">
+                                <i class="bi bi-bar-chart-line"></i>Thống kê LINQ
+                            </a>
+                        </li>
+                        @if (vaiTro == "Admin")
+                        {
+                            <li class="nav-item mt-2 border-top border-secondary pt-2">
+                                <a class="nav-link text-warning" asp-controller="TaiKhoan" asp-action="Index">
+                                    <i class="bi bi-shield-lock"></i>Tài khoản (Admin)
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+
+            <main class="@(isStaffOrAdmin ? "col-md-9 ms-sm-auto col-lg-10 px-md-4" : "col-12 container") py-4">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["Error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <footer class="py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            <span>&copy; @DateTime.Now.Year - Hệ thống Quản lý Khóa học & Đăng ký học (ASP.NET Core 10 MVC - Đồ án Nhóm 5 Sinh viên)</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
