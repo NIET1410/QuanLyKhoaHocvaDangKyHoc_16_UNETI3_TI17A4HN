@@ -1,0 +1,35 @@
+﻿@* File: /Views/DangKyKhoaHoc/Confirm.cshtml *@
+@* Họ và tên: Tạ Xuân Thưng - 23103100286 *@
+@model QuanLyKhoaHoc.Models.KhoaHoc
+@{
+    ViewData["Title"] = "Xác nhận đăng ký khóa học";
+}
+
+<div class="card col-md-7 mx-auto shadow-sm">
+    <div class="card-header bg-primary text-white py-3">
+        <h5 class="mb-0 fw-bold"><i class="bi bi-check2-square me-2"></i>Xác nhận Đăng ký Khóa học</h5>
+    </div>
+    <div class="card-body">
+        <h5 class="fw-bold text-primary">@Model.TenKhoaHoc</h5>
+        <p class="mb-1"><strong>Môn học:</strong> @Model.MonHoc?.TenMonHoc</p>
+        <p class="mb-1"><strong>Giảng viên:</strong> @Model.GiangVien?.HoTen</p>
+        <p class="mb-1"><strong>Thời gian học:</strong> @Model.NgayBatDau.ToString("dd/MM/yyyy") - @Model.NgayKetThuc.ToString("dd/MM/yyyy")</p>
+        <p class="mb-1"><strong>Hình thức:</strong> @Model.HinhThuc</p>
+        <p class="mb-1"><strong>Số chỗ còn nhận:</strong> @Model.SoChoConLai / @Model.SoLuongToiDa</p>
+        <p class="mb-3"><strong>Học phí:</strong> <span class="text-danger fw-bold fs-5">@Model.HocPhi.ToString("N0") VNĐ</span></p>
+
+        <form asp-action="RegisterCourse" method="post">
+            <input type="hidden" name="maKhoaHoc" value="@Model.MaKhoaHoc" />
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Ghi chú đăng ký (nếu có)</label>
+                <textarea name="ghiChu" rows="2" class="form-control" placeholder="Ví dụ: Mong muốn đóng học phí qua chuyển khoản..."></textarea>
+            </div>
+            <div class="d-flex justify-content-between">
+                <a asp-controller="KhoaHoc" asp-action="Details" asp-route-id="@Model.MaKhoaHoc" class="btn btn-outline-secondary">Quay lại</a>
+                <button type="submit" class="btn btn-success fw-bold px-4">
+                    <i class="bi bi-send-check me-1"></i>Xác nhận Đăng ký
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
