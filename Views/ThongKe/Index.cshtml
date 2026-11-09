@@ -1,0 +1,104 @@
+﻿@* File: /Views/ThongKe/Index.cshtml *@
+@* Họ và tên: Nguyễn Minh Tiến - 23103100298 *@
+@model QuanLyKhoaHoc.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Thống kê LINQ";
+}
+
+<h3 class="fw-bold mb-4"><i class="bi bi-bar-chart-line text-primary me-2"></i>Báo cáo & Thống kê Chuyên sâu (LINQ)</h3>
+
+<div class="row g-4">
+    <!-- 1. Số khóa học theo môn học -->
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-bold">1. Số khóa học theo Môn học (GroupBy + Count)</div>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead><tr><th>Tên môn học</th><th class="text-end">Số khóa học</th></tr></thead>
+                    <tbody>
+                        @foreach (var item in Model.KhoaHocTheoMon)
+                        {
+                            <tr><td>@item.TenMonHoc</td><td class="text-end fw-bold">@item.SoKhoaHoc</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Tỷ lệ Đạt / Không đạt & Điểm TB theo khóa -->
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-bold">
+                2. Điểm Trung bình & Tỷ lệ Đạt (@Model.TyLeDat% Đạt / @Model.TyLeKhongDat% Không đạt)
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead><tr><th>Khóa học</th><th>Số HV có điểm</th><th class="text-end">Điểm TB</th></tr></thead>
+                    <tbody>
+                        @foreach (var item in Model.DiemTrungBinhTheoKhoa)
+                        {
+                            <tr>
+                                <td>@item.TenKhoaHoc</td>
+                                <td>@item.SoBaiThi</td>
+                                <td class="text-end fw-bold text-primary">@item.DiemTrungBinh</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Số học viên, Doanh thu & Công nợ theo khóa học -->
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-bold">3. Thống kê Học viên, Doanh thu & Công nợ theo Khóa học</div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Khóa học</th>
+                            <th>Số HV</th>
+                            <th class="text-end">Doanh thu (Sum)</th>
+                            <th class="text-end">Công nợ (Sum)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.HocVienTheoKhoa)
+                        {
+                            <tr>
+                                <td>@item.TenKhoaHoc</td>
+                                <td><span class="badge bg-info text-dark">@item.SoHocVien</span></td>
+                                <td class="text-end text-success fw-semibold">@item.DoanhThu.ToString("N0") đ</td>
+                                <td class="text-end text-danger fw-semibold">@item.CongNo.ToString("N0") đ</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Số đăng ký theo tháng -->
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-bold">4. Số đăng ký theo Tháng</div>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead><tr><th>Tháng/Năm</th><th>Số ĐK</th><th class="text-end">Thực thu</th></tr></thead>
+                    <tbody>
+                        @foreach (var item in Model.DangKyTheoThang)
+                        {
+                            <tr>
+                                <td>Tháng @item.Thang/@item.Nam</td>
+                                <td class="fw-bold">@item.SoDangKy</td>
+                                <td class="text-end text-success">@item.TongThu.ToString("N0") đ</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
