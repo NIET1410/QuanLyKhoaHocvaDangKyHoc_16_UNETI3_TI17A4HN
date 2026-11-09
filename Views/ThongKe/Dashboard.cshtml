@@ -1,0 +1,85 @@
+﻿@* File: /Views/ThongKe/Dashboard.cshtml *@
+@* Họ và tên: Nguyễn Minh Tiến - 23103100298 *@
+@model QuanLyKhoaHoc.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard Quản trị";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0"><i class="bi bi-speedometer2 text-primary me-2"></i>Dashboard Tổng quan Hệ thống</h3>
+    <a asp-action="Index" class="btn btn-outline-primary btn-sm">
+        <i class="bi bi-bar-chart-line me-1"></i>Xem Báo cáo Thống kê LINQ chi tiết
+    </a>
+</div>
+
+<!-- 10 CHỈ SỐ DASHBOARD BẮT BUỘC -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white p-3">
+            <div class="small text-uppercase">Tổng số môn học</div>
+            <div class="fs-2 fw-bold">@Model.TongSoMonHoc</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-dark p-3">
+            <div class="small text-uppercase">Tổng khóa học (Khả dụng)</div>
+            <div class="fs-2 fw-bold">@Model.TongSoKhoaHoc <span class="fs-6">(@Model.SoKhoaHocDangKhaDung đang mở)</span></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white p-3">
+            <div class="small text-uppercase">Tổng số học viên</div>
+            <div class="fs-2 fw-bold">@Model.TongSoHocVien</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-dark text-white p-3">
+            <div class="small text-uppercase">Tổng lượt đăng ký</div>
+            <div class="fs-2 fw-bold">@Model.TongSoDangKy</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-start border-warning border-4 p-3">
+            <div class="text-muted small">Đăng ký Chờ xử lý</div>
+            <div class="fs-3 fw-bold text-warning">@Model.SoDangKyChoXuLy hồ sơ</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-start border-info border-4 p-3">
+            <div class="text-muted small">Đăng ký Đang xử lý</div>
+            <div class="fs-3 fw-bold text-info">@Model.SoDangKyDangXuLy hồ sơ</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-start border-success border-4 p-3">
+            <div class="text-muted small">Đăng ký Hoàn thành</div>
+            <div class="fs-3 fw-bold text-success">@Model.SoDangKyHoanThanh hồ sơ</div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card p-3 bg-white">
+            <div class="text-muted small">Tổng Doanh thu Học phí Đã thu</div>
+            <div class="fs-3 fw-bold text-success">@Model.TongHocPhiThuDuoc.ToString("N0") VNĐ</div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 bg-white">
+            <div class="text-muted small">Tổng Công nợ Học phí Còn lại</div>
+            <div class="fs-3 fw-bold text-danger">@Model.TongCongNo.ToString("N0") VNĐ</div>
+        </div>
+    </div>
+</div>
+
+@if (Model.KhoaHocNhieuHocVienNhat != null)
+{
+    <div class="alert alert-primary d-flex justify-content-between align-items-center">
+        <div>
+            <i class="bi bi-trophy-fill text-warning fs-4 me-2"></i>
+            <strong>Khóa học thu hút nhiều học viên nhất:</strong> @Model.KhoaHocNhieuHocVienNhat.TenKhoaHoc
+            (<strong>@Model.KhoaHocNhieuHocVienNhat.SoHocVien</strong> học viên - Doanh thu: <strong>@Model.KhoaHocNhieuHocVienNhat.DoanhThu.ToString("N0") đ</strong>)
+        </div>
+        <a asp-controller="KhoaHoc" asp-action="Details" asp-route-id="@Model.KhoaHocNhieuHocVienNhat.MaKhoaHoc" class="btn btn-sm btn-primary">Xem khóa học</a>
+    </div>
+}
