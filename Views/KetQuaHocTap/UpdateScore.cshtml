@@ -1,0 +1,53 @@
+﻿@* File: /Views/KetQuaHocTap/UpdateScore.cshtml *@
+@* Họ và tên: Nguyễn Minh Tiến - 23103100298 *@
+@model QuanLyKhoaHoc.Models.KetQuaHocTap
+@{
+    ViewData["Title"] = "Nhập điểm học viên";
+    var dk = ViewBag.DangKy as QuanLyKhoaHoc.Models.DangKyKhoaHoc;
+}
+
+<div class="card col-md-7 mx-auto shadow-sm">
+    <div class="card-header bg-primary text-white py-3">
+        <h5 class="mb-0 fw-bold"><i class="bi bi-calculator me-2"></i>Cập nhật Điểm Học tập (Tự động tính Tổng kết & Xếp loại)</h5>
+    </div>
+    <div class="card-body">
+        <div class="bg-light p-3 rounded mb-3">
+            <div><strong>Học viên:</strong> @dk?.HocVien?.HoTen</div>
+            <div><strong>Khóa học:</strong> @dk?.KhoaHoc?.TenKhoaHoc</div>
+            <div><strong>Trạng thái đăng ký:</strong> <span class="badge bg-success">@dk?.TrangThai</span></div>
+        </div>
+
+        <form asp-action="UpdateScore" method="post">
+            <input type="hidden" asp-for="MaDangKy" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="DiemChuyenCan" class="form-label fw-semibold"></label>
+                    <input asp-for="DiemChuyenCan" type="number" step="0.1" min="0" max="10" class="form-control" required />
+                    <span asp-validation-for="DiemChuyenCan" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="DiemGiuaKy" class="form-label fw-semibold"></label>
+                    <input asp-for="DiemGiuaKy" type="number" step="0.1" min="0" max="10" class="form-control" required />
+                    <span asp-validation-for="DiemGiuaKy" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="DiemCuoiKy" class="form-label fw-semibold"></label>
+                    <input asp-for="DiemCuoiKy" type="number" step="0.1" min="0" max="10" class="form-control" required />
+                    <span asp-validation-for="DiemCuoiKy" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="alert alert-info small mt-3 mb-0">
+                <strong>Công thức tự động:</strong> Điểm tổng kết = 10% Chuyên cần + 30% Giữa kỳ + 60% Cuối kỳ. Từ 5.0 trở lên đạt kết quả <strong>Đạt</strong>.
+            </div>
+
+            <div class="mt-4 d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+                <button type="submit" class="btn btn-primary fw-bold px-4">Lưu & Tính điểm tự động</button>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

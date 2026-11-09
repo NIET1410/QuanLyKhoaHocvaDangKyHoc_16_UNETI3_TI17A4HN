@@ -1,0 +1,90 @@
+﻿@* File: /Views/KetQuaHocTap/Index.cshtml *@
+@* Họ và tên: Nguyễn Minh Tiến - 23103100298 *@
+@model IEnumerable<QuanLyKhoaHoc.Models.DangKyKhoaHoc>
+@{
+    ViewData["Title"] = "Quản lý Kết quả học tập";
+    var khoaHocs = ViewBag.KhoaHocs as IEnumerable<QuanLyKhoaHoc.Models.KhoaHoc>;
+}
+
+<h4 class="fw-bold mb-3"><i class="bi bi-journal-check text-primary me-2"></i>Quản lý Điểm & Kết quả Học tập</h4>
+
+<form method="get" class="card card-body mb-3 shadow-sm">
+    <div class="row g-2">
+        <div class="col-md-5">
+            <select name="maKhoaHoc" class="form-select">
+                <option value="">-- Tất cả khóa học --</option>
+                @if (khoaHocs != null)
+                {
+                    foreach (var kh in khoaHocs)
+                    {
+                        <option value="@kh.MaKhoaHoc" selected="@(ViewBag.MaKhoaHoc != null && (int)ViewBag.MaKhoaHoc == kh.MaKhoaHoc)">@kh.TenKhoaHoc</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select name="ketQuaFilter" class="form-select">
+                <option value="">-- Tất cả kết quả --</option>
+                <option value="Đạt" selected="@(ViewBag.KetQuaFilter == "Đạt")">Đạt</option>
+                <option value="Không đạt" selected="@(ViewBag.KetQuaFilter == "Không đạt")">Không đạt</option>
+                <option value="ChuaCoDiem" selected="@(ViewBag.KetQuaFilter == "ChuaCoDiem")">Chưa nhập điểm</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary w-100">Lọc danh sách</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Đặt lại</a>
+        </div>
+    </div>
+</form>
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã ĐK</th>
+                    <th>Học viên</th>
+                    <th>Khóa học</th>
+                    <th>Chuyên cần (10%)</th>
+                    <th>Giữa kỳ (30%)</th>
+                    <th>Cuối kỳ (60%)</th>
+                    <th>Tổng kết</th>
+                    <th>Xếp loại</th>
+                    <th>Kết quả</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var kq = item.KetQuaHocTap;
+                    <tr>
+                        <td>#@item.MaDangKy</td>
+                        <td class="fw-semibold">@item.HocVien?.HoTen</td>
+                        <td>@item.KhoaHoc?.TenKhoaHoc</td>
+                        @if (kq != null)
+                        {
+                            <td>@kq.DiemChuyenCan</td>
+                            <td>@kq.DiemGiuaKy</td>
+                            <td>@kq.DiemCuoiKy</td>
+                            <td class="fw-bold text-primary">@kq.DiemTongKet.ToString("0.00")</td>
+                            <td>@kq.XepLoai</td>
+                            <td>
+                                <span class="badge @(kq.KetQua == "Đạt" ? "bg-success" : "bg-danger")">@kq.KetQua</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td colspan="6" class="text-muted fst-italic">Chưa nhập điểm</td>
+                        }
+                        <td class="text-end">
+                            <a asp-action="UpdateScore" asp-route-maDangKy="@item.MaDangKy" class="btn btn-sm btn-primary">
+                                <i class="bi bi-pencil-square me-1"></i>@(kq == null ? "Nhập điểm" : "Sửa điểm")
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
